@@ -6,4 +6,4 @@ _this software is unfinished_
 
 # Credits
 
-Based on [Andy Burtons vm_backup](http://www.andy-burton.co.uk/blog/ Andy-Buton.co.uk)
+Based on [Andy Burtons vm_backup](http://www.andy-burton.co.uk/blog/ "Andy-Buton.co.uk")
