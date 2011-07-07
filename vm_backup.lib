@@ -310,6 +310,28 @@ function backup_vm
 		fi
 	fi
 	
+	
+	
+#	inserted code to delete any vdi snapshots not for backing up
+	
+	listofvdis=`get_vm_vdi $snapshot`
+
+	delete_nobackup_vdi $listofvdis
+
+	if [ $? -ne 0 ]; then
+		if [ $vm_log_enabled ]; then
+			log_message "delete_nobackup_vdi failed: error code $?"
+		fi
+		return 7
+	else
+		if [ $vm_log_enabled ]; then
+			log_message "delete_nobackup_vdi succeeded"
+		fi
+	fi
+#	edited code finished
+
+	
+		
 	export_vm_result=`export_vm $snapshot $export_name`
 	
 	if [ $? -ne 0 ]; then
@@ -818,5 +840,31 @@ function destroy_vdi
 	fi
 	
 	echo "$echo"
+	return 0
+}
+
+#
+# see if snapshot vdi has nobackup tag
+# if no backup needed delete vdi by passing to destory vdi
+# @use delete_nobackup_vdi "string of uuids"
+# @params string of uuids
+#
+
+function delete_nobackup_vdi
+{
+	for i in $@; do
+
+		end_of_description=`xe vdi-param-get uuid=$i param-name=name-description | awk '{print substr($0,length($0)-7,length($0))}'`
+
+		if [ $? -ne 0 ]; then
+			return 1
+		fi
+		
+		if [ "$end_of_description" = "nobackup" ]; then
+			destroy_vdi $i
+		fi
+	
+	done
+	
 	return 0
 }
