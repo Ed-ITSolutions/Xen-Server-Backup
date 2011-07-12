@@ -24,6 +24,8 @@ dir=`dirname $0`
 . $dir"/vm_backup.lib"
 . $dir"/vm_backup.cfg"
 
+touch $log_path
+
 
 # Switch backup_vms to set the VM uuids we are backing up in vm_backup_list
 
@@ -58,10 +60,22 @@ case $backup_vms in
 	
 esac
 
+# Check if backing to CIFS share
+# if not run backups
+# else mount share and if successful run backups
 
-# Backup VMs
+if [ -z $cifs_share ]; then
+	backup_vm_list
+else
+	`mount -t cifs "$cifs_share" $cifs_mountpoint -o username=$cifs_username,password="$cifs_password"`
+	if [ $? -eq 0 ]; then
+		backup_vm_list
+	else	
+		echo "failed to mount exiting"
+	exit
+	fi
+fi
 
-backup_vm_list
 
 
 # End
