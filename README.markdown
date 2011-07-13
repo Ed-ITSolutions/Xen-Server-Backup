@@ -10,6 +10,8 @@ Our modifications to this script are the ability to backup virtual machines minu
 
 To prevent a disk from being backed up by this script place 'nobackup' at the end of is description.
 
+For the script to log errors to xencenter you need to set your host uuid in vm_backup.cfg. The priority of the alert can also be set in the config file.
+
 # Credits
 
 Based on [Andy Burtons vm_backup](http://www.andy-burton.co.uk/blog/ "Andy-Buton.co.uk")
