@@ -70,9 +70,9 @@ else
 	`mount -t cifs "$cifs_share" $cifs_mountpoint -o username=$cifs_username,password="$cifs_password"`
 	if [ $? -eq 0 ]; then
 		backup_vm_list
-	else	
-		echo "failed to mount exiting"
-	exit
+	else
+		`xe message-create name="Backups Error" body="Unable to mount share" priority=$alert_priority host-uuid=$host_uuid`
+		exit
 	fi
 fi
 
