@@ -67,7 +67,7 @@ esac
 if [ -z $cifs_share ]; then
 	backup_vm_list
 else
-	`mount -t cifs "$cifs_share" $cifs_mountpoint -o username=$cifs_username,password="$cifs_password"`
+	`mount -t cifs "$cifs_share" $backup_dir -o username=$cifs_username,password="$cifs_password"`
 	if [ $? -eq 0 ]; then
 		backup_vm_list
 	else
