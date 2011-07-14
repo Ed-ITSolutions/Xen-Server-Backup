@@ -82,7 +82,9 @@ else
 	fi
 fi
 
-
+if [ -n "$keep_backups_for" ]; then
+remove_old_backups $keep_backups_for
+fi 
 
 # End
 

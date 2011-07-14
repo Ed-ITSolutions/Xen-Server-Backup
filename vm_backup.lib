@@ -868,3 +868,34 @@ function delete_nobackup_vdi
 	
 	return 0
 }
+
+#
+# Function used to compare dates
+#
+
+function is_older
+{
+	DATE=$(date -d "$1" +%Y-%m-%d)
+	TODAY=$(date -d "$(date +%Y-%m-%d) $2 $3 $4 $5" +%s)
+	COMPARE=$(date -d "$DATE" +%s)
+	test $(($TODAY - $COMPARE)) -le 0 && return 1 || return 0
+}
+
+#
+# Function to check if backup is old 
+# And remove backup if so
+#
+
+function remove_old_backups
+{
+	for curFile in $backup_dir/*$backup_ext; do
+	
+	curFileDate=${curFile: -23:10}
+	curFileDate=${curFileDate//[-]/}
+
+	if is_older $curFileDate -$1 $2 ; then
+		rm "$curFile"
+	fi
+
+	done
+}
