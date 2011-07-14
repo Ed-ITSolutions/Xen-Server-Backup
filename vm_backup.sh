@@ -60,6 +60,12 @@ case $backup_vms in
 	
 esac
 
+# Check backup_dir exists if not create it
+if [ ! -d $backup_dir ];
+then
+   `mkdir -p $backup_dir`
+fi
+
 # Check if backing to CIFS share
 # if not run backups
 # else mount share and if successful run backups
