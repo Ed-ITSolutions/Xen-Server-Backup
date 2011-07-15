@@ -77,7 +77,7 @@ else
 	if [ $? -eq 0 ]; then
 		backup_vm_list
 	else
-		`xe message-create name="Backups Error" body="Unable to mount share" priority=$alert_priority host-uuid=$host_uuid`
+		console_alert "backups mount error" "Unable to mount share, please check cfg"
 		exit
 	fi
 fi

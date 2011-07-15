@@ -893,9 +893,25 @@ function remove_old_backups
 	curFileDate=${curFile: -23:10}
 	curFileDate=${curFileDate//[-]/}
 
-	if is_older $curFileDate -$1 $2 ; then
+	if is_older $curFileDate -"$1" "$2" ; then
 		rm "$curFile"
 	fi
 
 	done
+}
+
+#
+# Function to perform console alert
+# Takes 2 variables 1st name of error 2nd message
+#
+
+function console_alert
+{
+	if [ -n "$host_uuid" ]; then
+		`xe message-create name="$1" body="$2" priority=$alert_priority host-uuid=$host_uuid`
+	else
+		
+		host_uuid=`xe pool-list | grep "uuid" | awk '{print $NF}'`
+		`xe message-create name="$1" body="$2" priority=$alert_priority pool-uuid=$host_uuid`
+	fi
 }
