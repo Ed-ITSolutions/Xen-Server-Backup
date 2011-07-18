@@ -888,16 +888,20 @@ function is_older
 
 function remove_old_backups
 {
-	for curFile in $backup_dir/*$backup_ext; do
+	isEmpty=`ls $backup_dir | grep .xva`
 	
-	curFileDate=${curFile: -23:10}
-	curFileDate=${curFileDate//[-]/}
+	if [ -n "$isEmpty" ]; then
+		for curFile in $backup_dir/*$backup_ext; do
+		
+		curFileDate=${curFile: -23:10}
+		curFileDate=${curFileDate//[-]/}
 
-	if is_older $curFileDate -"$1" "$2" ; then
-		rm "$curFile"
-	fi
-
+		if is_older $curFileDate -"$1" "$2" ; then
+			rm "$curFile"
+		fi
 	done
+	fi
+	
 }
 
 #
