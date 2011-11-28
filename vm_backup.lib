@@ -154,6 +154,30 @@ function set_running_vms
 	return 0
 }
 
+#
+# set_argv_vms
+# Set running VMs in backup list
+# @use set_argv_vms "uuids"
+# @return void
+#
+
+function set_argv_vms
+{
+	if [ $vm_log_enabled ]; then
+		log_message "Set argv VMs"
+	fi
+	
+	reset_backup_list
+	
+	argv_vms="$1"
+	
+	for uuid in $argv_vms; do
+		add_to_backup_list $uuid
+	done
+	
+	return 0
+}
+
 
 #
 # get_all_vms
@@ -677,7 +701,7 @@ function export_vm
 		log_message "Export VM $1 as $2"
 	fi
 	
-	echo=`xe vm-export vm=$1 filename="$backup_dir$2" 2>>$log_path`
+	echo=`xe vm-export compress=$export_file_compress vm=$1 filename="$backup_dir$2" 2>>$log_path`
 	
 	if [ $? -ne 0 ]; then
 		return 1
