@@ -45,6 +45,13 @@ case $backup_vms in
 		set_running_vms
 		;;
 		
+	"argv")
+		if [ $vm_log_enabled ]; then
+			log_message "Backup argv VMs"
+		fi
+		set_argv_vms "$1"
+		;;
+		
 	"list")
 		if [ $vm_log_enabled ]; then
 			log_message "Backup list VMs"
